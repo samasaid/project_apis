@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Str;
 
+$DATABASE_URL = parse_url("DATABASE_URL");
+
 return [
 
     /*
@@ -15,7 +17,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'pgsql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -66,11 +68,23 @@ return [
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            // this settings will change becouse of online sever
+            // start
+            // 'host' => env('DB_HOST', '127.0.0.1'),
+            // 'port' => env('DB_PORT', '5432'),
+            // 'database' => env('DB_DATABASE', 'forge'),
+            // 'username' => env('DB_USERNAME', 'forge'),
+            // 'password' => env('DB_PASSWORD', ''),
+            // end
+
+            // add new settings
+            // start
+            'host' => isset($DATABASE_URL['host'])?$DATABASE_URL['host']:null,
+            'port' => isset($DATABASE_URL['host'])?$DATABASE_URL['host']:null,
+            'database' => isset($DATABASE_URL['path'])? ltrim($DATABASE_URL['path'] , "/"):null,
+            'username' => isset($DATABASE_URL['user'])?$DATABASE_URL['user']:null,
+            'password' => isset($DATABASE_URL['pass'])?$DATABASE_URL['pass']:null,
+            // end
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,

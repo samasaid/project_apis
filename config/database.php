@@ -79,11 +79,15 @@ return [
 
             // add new settings
             // start
-            'host' => isset($DATABASE_URL['host'])?$DATABASE_URL['host']:null,
-            'port' => isset($DATABASE_URL['host'])?$DATABASE_URL['host']:null,
-            'database' => isset($DATABASE_URL['path'])? ltrim($DATABASE_URL['path'] , "/"):null,
-            'username' => isset($DATABASE_URL['user'])?$DATABASE_URL['user']:null,
-            'password' => isset($DATABASE_URL['pass'])?$DATABASE_URL['pass']:null,
+            'host' => env('DB_HOST', 'ec2-34-203-114-67.compute-1.amazonaws.com'),
+            'port' =>   env('DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'ddemt0pp2oro9m'),
+            'username' => env('DB_USERNAME', 'ztaojwxjoppvla'),
+            'password' => env('DB_PASSWORD', '9c9669b9bcd2a9072bb99aede6a7c687cc4eab425c12d368b04ffdee830803c0'),
+            // 'port' => isset($DATABASE_URL['host'])?$DATABASE_URL['host']:null,
+            // 'database' => isset($DATABASE_URL['path'])? ltrim($DATABASE_URL['path'] , "/"):null,
+            // 'username' => isset($DATABASE_URL['user'])?$DATABASE_URL['user']:null,
+            // 'password' => isset($DATABASE_URL['pass'])?$DATABASE_URL['pass']:null,
             // end
             'charset' => 'utf8',
             'prefix' => '',

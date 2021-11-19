@@ -21,8 +21,8 @@ class GeneralController extends Controller
         }
     }
     public function addC(Request $request){
-        Province::create([
-            'name' => $request->ch,
+        ChronicDisease::create([
+            'chronic_disease' => $request->ch,
         ]);
     }
     public function allProvinces(){

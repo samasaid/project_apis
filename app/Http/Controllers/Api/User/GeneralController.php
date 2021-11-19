@@ -20,11 +20,6 @@ class GeneralController extends Controller
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
-    public function addC(Request $request){
-        ChronicDisease::create([
-            'chronic_disease' => $request->ch,
-        ]);
-    }
     public function allProvinces(){
         try {
             $provinces = Province::all();

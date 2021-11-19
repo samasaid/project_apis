@@ -40,7 +40,6 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
         Route::get('chronic-disease', [GeneralController::class , 'allChronicDiseases'] );
         Route::get('provinces', [GeneralController::class , 'allProvinces'] );
         Route::post('add-donor', [DonorsController::class , 'addDonor'] );
-        Route::post('add-p', [GeneralController::class , 'addC'] );
         Route::get('donors', [DonorsController::class , 'getAllDonors'] );
         Route::post('donors-search', [DonorsController::class , 'searchAboutDonorByProvincesAndBloodType'] );
     });

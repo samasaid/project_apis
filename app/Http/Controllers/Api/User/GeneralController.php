@@ -20,6 +20,11 @@ class GeneralController extends Controller
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
+    public function addC(Request $request){
+        Province::create([
+            'name' => $request->ch,
+        ]);
+    }
     public function allProvinces(){
         try {
             $provinces = Province::all();

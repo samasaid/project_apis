@@ -22,7 +22,7 @@ class AuthController extends Controller
                         "full_name" => "required|string",
                         'national_id'=> "required|unique:users,national_id|max:14",
                         'mobile'=>"required|unique:users,mobile|max:11",
-                        'address'=>"required|exists:province,name|string",
+                        'address'=>"required|exists:provinces,name|string",
                         'date_of_birth'=>"required",
                         'blood_type'=>"required|string|in:A+,O+,B+,AB+,A-,O-,B-,AB-",
                         'sex'=>"required|in:male,female,other",

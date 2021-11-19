@@ -89,12 +89,10 @@ class AuthController extends Controller
                 // $credentials = $request->only(['national_id']);
                 $national_id = $request->input('national_id');
                 $userLogin = User::where('national_id' , '=' , $national_id)->first();
-
-                $token = JWTAuth::fromUser($userLogin);
-
-                if (!$token){
+                if ($userLogin == null){
                     return $this->returnError('E001', 'the national number is incorrect, try again');
                 }
+                $token = JWTAuth::fromUser($userLogin);
                 //return token
                 $msg = "you are loggin successfully";
                 return $this->returnData('token', $token , $msg);

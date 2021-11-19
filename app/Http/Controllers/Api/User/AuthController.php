@@ -26,7 +26,7 @@ class AuthController extends Controller
                         'date_of_birth'=>"required",
                         'blood_type'=>"required|string|in:A+,O+,B+,AB+,A-,O-,B-,AB-",
                         'sex'=>"required|in:male,female,other",
-                        'social_status'=>"required|string|in:single,maried",
+                        'social_status'=>"required|string|in:single,married",
 
                     ];
                     $messages = [

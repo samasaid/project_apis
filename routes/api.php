@@ -30,7 +30,7 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
         Route::post('register', [AuthController::class , 'register'] );
         Route::post('login', [AuthController::class , 'login'] );
         //this route only for authentocation users
-        Route::post('logout',[AuthController::class , 'logout']) -> middleware(['auth.guard:user-api']); //تم اضافة الميدلوير لان لازم يكون المستخدم مسجل زخول علشان يعرف يعمل لوجاويت
+        Route::get('logout',[AuthController::class , 'logout']) -> middleware(['auth.guard:user-api']); //تم اضافة الميدلوير لان لازم يكون المستخدم مسجل زخول علشان يعرف يعمل لوجاويت
 
     });
     ######################## end user authentocation api routes for unauthentecation  ########################

@@ -33,7 +33,7 @@ class AuthController extends Controller
                         "required"=>"this filed is Required",
                         "string"=>"this filed must be letters",
                         "in"=>"this value is not in the list",
-                        "exists"=>"this value is not in the list",
+                        "exists"=>"this province is not in the list",
                         "national_id.unique"=>"the national number has already been registered",
                         "national_id.max"=>"the national number must be 14 characters long",
                         "mobile.unique"=>"the mobile number has already been registered",

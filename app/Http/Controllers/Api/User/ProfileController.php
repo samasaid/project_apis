@@ -208,7 +208,7 @@ class ProfileController extends Controller
                        return $this->returnError('' , 'something went wrongs');
                     }
 
-                }catch(TokenInvalidException){
+                }catch(\Tymon\JWTAuth\Exceptions\TokenInvalidException){
                     $this->returnError('' , 'something went wrongs');
                 }
             }else{

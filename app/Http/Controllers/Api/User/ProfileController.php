@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\TryCatch;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class ProfileController extends Controller
 {
@@ -208,7 +206,7 @@ class ProfileController extends Controller
                        return $this->returnError('' , 'something went wrongs');
                     }
 
-                }catch(\Tymon\JWTAuth\Exceptions\TokenInvalidException){
+                }catch(\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
                     $this->returnError('' , 'something went wrongs');
                 }
             }else{

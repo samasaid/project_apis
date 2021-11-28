@@ -114,9 +114,12 @@ class ProfileController extends Controller
                 }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
                     return  $this -> returnError('','some thing went wrongs');
                 }
+                if($chronic_disease->isEmpty()){
+                    return $this->returnError('', 'you don`t have any chronic disease');
+                }
                 return $this->returnData('chronic_disease', $chronic_disease);
                 }else{
-                    $this -> returnError('','some thing went wrongs');
+                  return  $this -> returnError('','some thing went wrongs');
                 }
         }
         public function addDiagnosis(Request $request){
@@ -184,7 +187,10 @@ class ProfileController extends Controller
                 }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
                     return  $this -> returnError('','some thing went wrongs');
                 }
-                return $this->returnData('chronic_disease', $diagnosis);
+                if($diagnosis->isEmpty()){
+                    return $this->returnError('', 'you don`t have any diagnosises');
+                }
+                return $this->returnData('diagnosis', $diagnosis);
                 }else{
                     $this -> returnError('','some thing went wrongs');
                 }
@@ -207,10 +213,10 @@ class ProfileController extends Controller
                     }
 
                 }catch(\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
-                    $this->returnError('' , 'something went wrongs');
+                   return $this->returnError('' , 'something went wrongs');
                 }
             }else{
-                $this->returnError('' , 'something went wrongs');
+               return $this->returnError('' , 'something went wrongs');
             }
         }
 }

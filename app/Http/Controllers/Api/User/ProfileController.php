@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class ProfileController extends Controller
 {
@@ -119,24 +121,6 @@ class ProfileController extends Controller
                     $this -> returnError('','some thing went wrongs');
                 }
         }
-        public function deleteChronicDisease(Request $request){
-            $token = $request -> header('auth-token');
-            if($token){
-                try {
-                   $ChronicDisease_id = $request->id;
-                   if(!$ChronicDisease_id)
-                        $this -> returnError('','some thing went wrongs');
-                    $ChronicDisease = ChronicDisease::find($ChronicDisease_id);
-                    $ChronicDisease->delete();
-                }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
-                    return  $this -> returnError('','some thing went wrongs');
-                }
-                $msg = "Disease has been deleted successfully";
-                return $this->returnSuccessMessage($msg);
-                }else{
-                    $this -> returnError('','some thing went wrongs');
-                }
-        }
         public function addDiagnosis(Request $request){
             try {
                 //validation
@@ -206,5 +190,29 @@ class ProfileController extends Controller
                 }else{
                     $this -> returnError('','some thing went wrongs');
                 }
+        }
+
+        public function deleteDisease(Request $request){
+            $token = $request->header('auth-token');
+            if($token){
+                try{
+                    $id = $request->id;
+                    if($id != null){
+                        $disease = UserChronicDisease::find($id);
+                        if(!$disease){
+                           return $this->returnError('' , 'this chronic desease doesn`t exists');
+                        }
+                        $disease->delete();
+                       return $this->returnSuccessMessage('Chronic disease removed successfuly');
+                    }else{
+                       return $this->returnError('' , 'something went wrongs');
+                    }
+
+                }catch(TokenInvalidException){
+                    $this->returnError('' , 'something went wrongs');
+                }
+            }else{
+                $this->returnError('' , 'something went wrongs');
+            }
         }
 }

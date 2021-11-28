@@ -53,7 +53,7 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
             Route::post('profile-picture' , [ProfileController::class , 'addProfilePicture']);
             Route::post('add-chronic-disease' , [ProfileController::class , 'addChronicDisease']);
             Route::post('chronic-disease-data' , [ProfileController::class , 'getUserChronicDisease']);
-            Route::post('delete-chronic-disease' , [ProfileController::class , 'deleteChronicDisease']);
+            Route::post('delete-chronic-disease' , [ProfileController::class , 'deleteDisease']);
             Route::post('add-diagnosis' , [ProfileController::class , 'addDiagnosis']);
             Route::post('edit-diagnosis' , [ProfileController::class , 'editDiagnosis']);
             Route::post('diagnosis-data' , [ProfileController::class , 'getUserDiagnosis']);

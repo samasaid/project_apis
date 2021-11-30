@@ -36,17 +36,17 @@ class ProfileController extends Controller
         public function addProfilePicture(Request $request){
             try{
                 //validation
-                $rules = [
-                    'photo'=>"mimes:png,jpg,jpeg",
-                ];
-                $messages = [
-                    "mimes"=>"the image extention must be png or jpg or jpeg",
-                ];
-                $validator = Validator::make($request->all(), $rules , $messages);
-                if ($validator->fails()) {
-                    $code = $this->returnCodeAccordingToInput($validator);
-                    return $this->returnValidationError($code, $validator);
-                }
+                // $rules = [
+                //     // 'photo'=>"mimes:png,jpg,jpeg",
+                // ];
+                // $messages = [
+                //     // "mimes"=>"the image extention must be png or jpg or jpeg",
+                // ];
+                // $validator = Validator::make($request->all(), $rules , $messages);
+                // if ($validator->fails()) {
+                //     $code = $this->returnCodeAccordingToInput($validator);
+                //     return $this->returnValidationError($code, $validator);
+                // }
                 //update user data to add user photo
                 $user_id = Auth::guard('user-api')->user()->id;
                 $user = User::where('id' , $user_id)->first();

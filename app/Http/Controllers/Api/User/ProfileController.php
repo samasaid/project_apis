@@ -53,12 +53,13 @@ class ProfileController extends Controller
                 if($request->has('photo')){
                     $filePath = uploadImage('profile_image' , $request->photo);
                     $user->photo = $filePath ;
+                    $user->save();
+                    // return Success Message
+                    $msg = "profile picture updated successfully";
+                    return $this->returnSuccessMessage($msg);
+                 }else{
+                     return $this->returnError('' , 'sorry profile picture has not been updated');
                  }
-                $user->save();
-                // return Success Message
-                // return $this->returnData('user' , $user);
-                $msg = "profile picture updated successfully";
-                return $this->returnSuccessMessage($msg);
 
             }catch(Exception $ex){
                 return $this->returnError($ex->getCode(), $ex->getMessage());
@@ -196,27 +197,27 @@ class ProfileController extends Controller
                 }
         }
 
-        public function deleteDisease(Request $request){
-            $token = $request->header('auth-token');
-            if($token){
-                try{
-                    $id = $request->id;
-                    if($id != null){
-                        $disease = UserChronicDisease::find($id);
-                        if(!$disease){
-                           return $this->returnError('' , 'this chronic desease doesn`t exists');
-                        }
-                        $disease->delete();
-                       return $this->returnSuccessMessage('Chronic disease removed successfuly');
-                    }else{
-                       return $this->returnError('' , 'something went wrongs');
-                    }
+        // public function deleteDisease(Request $request){
+        //     $token = $request->header('auth-token');
+        //     if($token){
+        //         try{
+        //             $id = $request->id;
+        //             if($id != null){
+        //                 $disease = UserChronicDisease::find($id);
+        //                 if(!$disease){
+        //                    return $this->returnError('' , 'this chronic desease doesn`t exists');
+        //                 }
+        //                 $disease->delete();
+        //                return $this->returnSuccessMessage('Chronic disease removed successfuly');
+        //             }else{
+        //                return $this->returnError('' , 'something went wrongs');
+        //             }
 
-                }catch(\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
-                   return $this->returnError('' , 'something went wrongs');
-                }
-            }else{
-               return $this->returnError('' , 'something went wrongs');
-            }
-        }
+        //         }catch(\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
+        //            return $this->returnError('' , 'something went wrongs');
+        //         }
+        //     }else{
+        //        return $this->returnError('' , 'something went wrongs');
+        //     }
+        // }
 }

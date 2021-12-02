@@ -197,27 +197,27 @@ class ProfileController extends Controller
                 }
         }
 
-        // public function deleteDisease(Request $request){
-        //     $token = $request->header('auth-token');
-        //     if($token){
-        //         try{
-        //             $id = $request->id;
-        //             if($id != null){
-        //                 $disease = UserChronicDisease::find($id);
-        //                 if(!$disease){
-        //                    return $this->returnError('' , 'this chronic desease doesn`t exists');
-        //                 }
-        //                 $disease->delete();
-        //                return $this->returnSuccessMessage('Chronic disease removed successfuly');
-        //             }else{
-        //                return $this->returnError('' , 'something went wrongs');
-        //             }
+        public function deleteDisease(Request $request){
+            $token = $request->header('auth-token');
+            if($token){
+                try{
+                    $id = $request->id;
+                    if($id != null){
+                        $disease = UserChronicDisease::find($id);
+                        if(!$disease){
+                           return $this->returnError('' , 'this chronic desease doesn`t exists');
+                        }
+                        $disease->delete();
+                       return $this->returnSuccessMessage('Chronic disease removed successfuly');
+                    }else{
+                       return $this->returnError('' , 'something went wrongs');
+                    }
 
-        //         }catch(\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
-        //            return $this->returnError('' , 'something went wrongs');
-        //         }
-        //     }else{
-        //        return $this->returnError('' , 'something went wrongs');
-        //     }
-        // }
+                }catch(\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
+                   return $this->returnError('' , 'something went wrongs');
+                }
+            }else{
+               return $this->returnError('' , 'something went wrongs');
+            }
+        }
 }

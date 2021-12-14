@@ -66,7 +66,7 @@ class DonorsController extends Controller
         try {
             // $donorsBYAddress = Donor::where('address' , $request->address)->get();
             // $donorsBYBloodType = Donor::where('blood_type' , $request->blood_type)->get();
-            $donorsBYAddressAndBloodType = Donor::where('address' , '=' ,$request->address)->orWhere('blood_type' , '=' ,$request->blood_type)->get();
+            $donorsBYAddressAndBloodType = Donor::where('address' , '=' ,$request->address)->Where('blood_type' , '=' ,$request->blood_type)->get();
             if($donorsBYAddressAndBloodType->isEmpty()){
                 return  $this -> returnError('','Sorry, there are no donors');
             }

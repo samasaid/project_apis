@@ -18,7 +18,8 @@ function calc_age($dateOfBirth){
 //this function for upload image
 function uploadImage($folder , $image){
     $image->store('/' , $folder);
-    $fileName = $image->hashName();
+    // $fileName = $image->hashName();
+    $fileName = $image;
     $path = 'images/'.$folder.'/'.$fileName;
     return $path;
 }

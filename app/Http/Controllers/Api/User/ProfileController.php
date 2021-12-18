@@ -184,28 +184,51 @@ class ProfileController extends Controller
                     $this -> returnError('','some thing went wrongs');
                 }
         }
-
-        public function deleteDisease(Request $request){
-            $token = $request->header('auth-token');
+        public function changeDiseaseStatus(Request $request){
+            $token = $request -> header('auth-token');
             if($token){
-                try{
-                    $id = $request->id;
-                    if($id != null){
-                        $disease = UserChronicDisease::find($id);
-                        if(!$disease){
-                           return $this->returnError('' , 'this chronic desease doesn`t exists');
-                        }
-                        $disease->delete();
-                       return $this->returnSuccessMessage('Chronic disease removed successfuly');
-                    }else{
-                       return $this->returnError('' , 'something went wrongs');
-                    }
+                try {
 
-                }catch(\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
-                   return $this->returnError('' , 'something went wrongs');
+                    $userdisease = UserChronicDisease::find($request->id);
+                    if(!$userdisease){
+                        return $this->returnError('',"thid disease does not exist");
+                    }
+                    if($userdisease->status == 1){
+                        $userdisease->status =0;
+                    }else{
+                        $userdisease->status =1;
+                    }
+                    $userdisease->save();
+                    // return $this->returnData('d' , $userdisease->status);
+                    return $this->returnSuccessMessage("status changed successfully");
+                    }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
+                        return  $this -> returnError('','some thing went wrongs');
+                    }
+                }else{
+                    $this -> returnError('','some thing went wrongs');
                 }
-            }else{
-               return $this->returnError('' , 'something went wrongs');
-            }
         }
+        // public function deleteDisease(Request $request){
+        //     $token = $request->header('auth-token');
+        //     if($token){
+        //         try{
+        //             $id = $request->id;
+        //             if($id != null){
+        //                 $disease = UserChronicDisease::find($id);
+        //                 if(!$disease){
+        //                    return $this->returnError('' , 'this chronic desease doesn`t exists');
+        //                 }
+        //                 $disease->delete();
+        //                return $this->returnSuccessMessage('Chronic disease removed successfuly');
+        //             }else{
+        //                return $this->returnError('' , 'something went wrongs');
+        //             }
+
+        //         }catch(\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
+        //            return $this->returnError('' , 'something went wrongs');
+        //         }
+        //     }else{
+        //        return $this->returnError('' , 'something went wrongs');
+        //     }
+        // }
 }

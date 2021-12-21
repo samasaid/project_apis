@@ -50,6 +50,7 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
         // هنا مفروض يتحط الروتس اللى لازم يشوفها اليوزر وهو مسجل
         Route::group(['prefix'=>'profile'] , function(){
             Route::post('personal-information' , [ProfileController::class , 'getPersonalInfo']);
+            Route::post('edit-information' , [ProfileController::class , 'editUserinfo']);
             Route::post('profile-picture' , [ProfileController::class , 'addProfilePicture']);
             Route::post('add-chronic-disease' , [ProfileController::class , 'addChronicDisease']);
             Route::post('chronic-disease-data' , [ProfileController::class , 'getUserChronicDisease']);

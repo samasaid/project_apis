@@ -33,6 +33,62 @@ class ProfileController extends Controller
                     $this -> returnError('','some thing went wrongs');
                 }
         }
+        public function editUserinfo(Request $request){
+            try{
+                // validation
+                $userId = Auth::guard('user-api')->user()->id;
+                $rules = [
+                    "full_name" => "required|string",
+                    'national_id'=> "required|max:14|unique:users,national_id,".$userId,
+                    'mobile'=>"required|max:11|unique:users,mobile,".$userId,
+                    'address'=>"required|exists:provinces,name|string",
+                    'date_of_birth'=>"required",
+                    'blood_type'=>"required|string|in:A+,O+,B+,AB+,A-,O-,B-,AB-",
+                    'sex'=>"required|in:male,female,other",
+                    'social_status'=>"required|string|in:single,married",
+
+                ];
+                $messages = [
+                    "required"=>"this filed is Required",
+                    "string"=>"this filed must be letters",
+                    "in"=>"this value is not in the list",
+                    "exists"=>"this province is not in the list",
+                    "national_id.unique"=>"the national number has already been registered",
+                    "national_id.max"=>"the national number must be 14 characters long",
+                    "mobile.unique"=>"the mobile number has already been registered",
+
+                ];
+
+                $validator = Validator::make($request->all(), $rules , $messages);
+
+                if ($validator->fails()) {
+                    $code = $this->returnCodeAccordingToInput($validator);
+                    return $this->returnValidationError($code, $validator);
+                }
+
+                $userId = Auth::guard('user-api')->user()->id;
+                $user = User::find($userId);
+                if(!$user){
+                    return $this->returnError('','This user not found');
+                }
+                $user->update([
+                    "full_name"=>$request->full_name,
+                    'national_id'=>$request->national_id,
+                    'mobile'=>$request->mobile,
+                    'address'=>$request->address,
+                    'date_of_birth'=>$request->date_of_birth,
+                    'blood_type'=>$request->blood_type,
+                    'sex'=>$request->sex,
+                    'social_status'=>$request->social_status,
+                ]);
+                $user->save();
+                return $this->returnSuccessMessage("Your Information has been Updated Successfully");
+
+            }catch(Exception $ex){
+                return $this->returnError($ex->getCode(), $ex->getMessage());
+            }
+
+        }
         public function addProfilePicture(Request $request){
             try{
                 //update user data to add user photo

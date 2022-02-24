@@ -57,6 +57,9 @@ class DonorsController extends Controller
     public function getAllDonors(){
         try {
             $donors = Donor::all();
+            if($donors->isEmpty()){
+                return  $this -> returnError('','Sorry, there are no donors');
+            }
             return $this->returnData('Donors' , $donors);
         } catch (Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());

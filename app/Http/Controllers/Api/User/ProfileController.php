@@ -204,13 +204,16 @@ class ProfileController extends Controller
                     "required"=>"this filed is Required",
                     "string"=>"this filed must be letters",
                 ];
-                $validator = Validator::make($request->all(), $rules);
+                $validator = Validator::make($request->all(), $rules , $messages);
                 if ($validator->fails()) {
                     $code = $this->returnCodeAccordingToInput($validator);
                     return $this->returnValidationError($code, $validator);
                 }
                 $user_id = Auth::guard('user-api')->user()->id;
                 $diagnosis = Diagnosis::find($request->id);
+                if(!$diagnosis){
+                    return $this->returnError('' , 'this chronic diagnosis doesn`t exists');
+                }
                 $diagnosis->update([
                     "diagnosis"=>$request->diagnosis,
                     "user_id"=>$user_id

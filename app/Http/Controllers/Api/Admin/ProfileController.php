@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\admins\Advice;
-use App\Models\admins\ChronicDisease;
+use App\Models\users\ChronicDisease;
 use App\Models\users\User;
 use Illuminate\Http\Request;
 use App\Traits\GeneralTrait;
@@ -59,6 +59,9 @@ class ProfileController extends Controller
                 return $this->returnValidationError($code, $validator);
             }
             $advice = Advice::find($request->id);
+            if(!$advice){
+                return $this->returnError('' , 'this advice doesn`t exists');
+            }
             $advice->update([
                 "advice"=>$request->advice,
                 "status"=>$request->status,
@@ -178,8 +181,11 @@ class ProfileController extends Controller
                 $code = $this->returnCodeAccordingToInput($validator);
                 return $this->returnValidationError($code, $validator);
             }
-            $advice = ChronicDisease::find($request->id);
-            $advice->update([
+            $disease = ChronicDisease::find($request->id);
+            if(!$disease){
+                return $this->returnError('' , 'this chronic disease doesn`t exists');
+            }
+            $disease->update([
                 "chronic_disease"=>$request->chronic_disease,
                 "description"=>$request->description,
                 "treatment"=>$request->treatment,
@@ -216,6 +222,7 @@ class ProfileController extends Controller
             }
     }
     //end chronic diseases section
+    //search about user
     public function userSearch(Request $request){
         try {
               //validation
@@ -242,4 +249,16 @@ class ProfileController extends Controller
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
+    public function getAllAdvices(){
+        try {
+            $advices = Advice::all();
+            if($advices->isEmpty()){
+                return  $this -> returnError('','Sorry, there are no advices');
+            }
+            return $this->returnData('Donors' , $advices);
+        } catch (Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
+    }
+
 }

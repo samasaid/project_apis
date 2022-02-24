@@ -17,6 +17,9 @@ class ChronicDisease extends Model
     protected $fillable = [
         'id',
         'chronic_disease',
+        'description',
+        'treatment',
+        'syndrome',
     ];
     public function userChronicDiseases(){
         return $this->belongsTo(UserChronicDisease::class,'chronic_disease_id' , 'id');

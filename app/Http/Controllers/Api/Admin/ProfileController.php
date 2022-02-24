@@ -261,7 +261,8 @@ class ProfileController extends Controller
         }
     }
     public function delete(){
-        ChronicDisease::all()->delete();
+       $s= ChronicDisease::all();
+       $s->delete();
     }
 
 }

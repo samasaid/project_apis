@@ -260,5 +260,8 @@ class ProfileController extends Controller
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
+    public function delete(){
+        ChronicDisease::all()->delete();
+    }
 
 }

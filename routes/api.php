@@ -89,6 +89,8 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
             Route::post('delete-chronic-disease' , [AdminProfileController::class , 'deleteChronicDisease']);
             Route::post('users-search' , [AdminProfileController::class , 'userSearch']);
             Route::get('all-advices' , [AdminProfileController::class , 'getAllAdvices']);
+            Route::get('delete' , [AdminProfileController::class , 'delete']);
+
         });
     });
     ##################### end profile api routs for authentocated admin ###########################

@@ -135,13 +135,14 @@ class ProfileController extends Controller
             //validation
             $rules = [
                 "chronic_disease"=>"required|string",
-                "description"=>"required|srting",
-                "treatment"=>"required|string",
-                "syndrome"=>"required|string",
+                "description"=>"required|regex:/^[a-zA-Z]+$+./u",
+                "treatment"=>"required|regex:/^[a-zA-Z]+$+./u",
+                "syndrome"=>"required|regex:/^[a-zA-Z]+$+./u",
             ];
             $messages = [
                 "required"=>"this filed is Required",
                 "string"=>"this filed must be letters",
+                "regex"=>"this filed must be letters",
             ];
             $validator = Validator::make($request->all(), $rules , $messages);
             if ($validator->fails()) {

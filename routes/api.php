@@ -44,6 +44,8 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
         Route::post('add-donor', [DonorsController::class , 'addDonor'] );
         Route::get('donors', [DonorsController::class , 'getAllDonors'] );
         Route::post('donors-search', [DonorsController::class , 'searchAboutDonorByProvincesAndBloodType'] );
+        Route::get('pro', [GeneralController::class , 'addp'] );
+
     });
     ################### end general api routes for unauthentecation user ################
 

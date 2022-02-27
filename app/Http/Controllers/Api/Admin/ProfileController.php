@@ -135,9 +135,9 @@ class ProfileController extends Controller
             //validation
             $rules = [
                 "chronic_disease"=>"required|string",
-                "description"=>"required|regex:/^[a-zA-Z]+$/u",
-                "treatment"=>"required|regex:/^[a-zA-Z]+$/u",
-                "syndrome"=>"required|regex:/^[a-zA-Z]+$/u",
+                "description"=>"required",
+                "treatment"=>"required",
+                "syndrome"=>"required",
             ];
             $messages = [
                 "required"=>"this filed is Required",

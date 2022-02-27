@@ -28,16 +28,16 @@ class GeneralController extends Controller
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
-    public function addp(){
-        $ps = ['New Valley' , 'Matruh' , 'Red Sea' , 'Giza' , ' South Sinai' , 'North Sinai',
-                'Suez' , 'Beheira' , 'Helwan' , 'Sharqia' , 'Dakahlia' ,'Kafr el-Sheikh','Alexandria',
-                'Monufia','Minya','Gharbia','Faiyum','Qena','Asyut','Sohag','Ismailia','Beni Suef','Qalyubia',
-                'Aswan','Damietta'
-             ];
-        foreach($ps as $p){
-            Province::create([
-                'name'=>$p
-            ]);
-        }
-    }
+    // public function addp(){
+    //     $ps = ['New Valley' , 'Matruh' , 'Red Sea' , 'Giza' , ' South Sinai' , 'North Sinai',
+    //             'Suez' , 'Beheira' , 'Helwan' , 'Sharqia' , 'Dakahlia' ,'Kafr el-Sheikh','Alexandria',
+    //             'Monufia','Minya','Gharbia','Faiyum','Qena','Asyut','Sohag','Ismailia','Beni Suef','Qalyubia',
+    //             'Aswan','Damietta'
+    //          ];
+    //     foreach($ps as $p){
+    //         Province::create([
+    //             'name'=>$p
+    //         ]);
+    //     }
+    // }
 }

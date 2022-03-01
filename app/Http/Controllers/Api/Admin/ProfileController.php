@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\admins\Admin;
 use App\Models\admins\Advice;
 use App\Models\users\ChronicDisease;
 use App\Models\users\User;
 use Illuminate\Http\Request;
 use App\Traits\GeneralTrait;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
@@ -127,6 +129,17 @@ class ProfileController extends Controller
             }else{
                return $this->returnError('' , 'something went wrongs');
             }
+    }
+    public function getAllAdvices(){
+        try {
+            $advices = Advice::all();
+            if($advices->isEmpty()){
+                return  $this -> returnError('','Sorry, there are no advices');
+            }
+            return $this->returnData('Donors' , $advices);
+        } catch (Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
     }
     //end advice section
     //start chronic diseases section
@@ -249,17 +262,84 @@ class ProfileController extends Controller
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
-    public function getAllAdvices(){
-        try {
-            $advices = Advice::all();
-            if($advices->isEmpty()){
-                return  $this -> returnError('','Sorry, there are no advices');
+    //get and edit and edit admin info
+    public function getAdminInfo(Request $request){
+        $token = $request -> header('auth-token');
+        if($token){
+            try {
+
+               $user = Auth::guard('admin-api')->user();
+            }catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
+                return  $this -> returnError('','some thing went wrongs');
             }
-            return $this->returnData('Donors' , $advices);
-        } catch (Exception $ex) {
+            return $this->returnData('admin', $user);
+            }else{
+                $this -> returnError('','some thing went wrongs');
+            }
+    }
+    public function editAdminInfo(Request $request){
+        try{
+            // validation
+            $userId = Auth::guard('admin-api')->user()->id;
+            $rules = [
+                'name' => "required|string",
+                'username'=> "required|string|unique:admins,username,".$userId,
+                'email'=>"required|email|unique:admins,email,".$userId,
+
+            ];
+            $messages = [
+                "required"=>"this filed is Required",
+                "string"=>"this filed must be letters",
+                "username.unique"=>"the username has already been registered",
+                "email.unique"=>"the email has already been registered",
+
+            ];
+
+            $validator = Validator::make($request->all(), $rules , $messages);
+
+            if ($validator->fails()) {
+                $code = $this->returnCodeAccordingToInput($validator);
+                return $this->returnValidationError($code, $validator);
+            }
+
+            $userId = Auth::guard('admin-api')->user()->id;
+            $user = Admin::find($userId);
+            if(!$user){
+                return $this->returnError('','This user not found');
+            }
+            $user->update([
+                "name"=>$request->name,
+                'username'=>$request->username,
+                'email'=>$request->email,
+            ]);
+            $user->save();
+            return $this->returnSuccessMessage("Your Information has been Updated Successfully");
+
+        }catch(Exception $ex){
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
+
+    }
+    //edit admin profile picture
+    public function addProfilePicture(Request $request){
+        try{
+            //update user data to add user photo
+            $user_id = Auth::guard('admin-api')->user()->id;
+            $user = Admin::where('id' , $user_id)->first();
+            if($request->has('photo')){
+                $filePath = uploadImage('profile_image' , $request->photo);
+                $user->photo = $filePath ;
+                $user->save();
+                // return Success Message
+                $msg = "profile picture updated successfully";
+                return $this->returnSuccessMessage($msg);
+             }else{
+                 return $this->returnError('' , 'sorry profile picture has not been updated');
+             }
+
+        }catch(Exception $ex){
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
-
 
 }

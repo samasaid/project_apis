@@ -81,6 +81,9 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
     Route::group(['prefix'=>'admin' , 'namespace'=>'Admin' , 'middleware'=>['auth.guard:admin-api']] , function(){
         // هنا مفروض يتحط الروتس اللى لازم يشوفها اليوزر وهو مسجل
         Route::group(['prefix'=>'profile'] , function(){
+            Route::get('admin-info' , [AdminProfileController::class , 'getAdminInfo']);
+            Route::post('edit-admin-info' , [AdminProfileController::class , 'editAdminInfo']);
+            Route::post('edit-admin-photo' , [AdminProfileController::class , 'addProfilePicture']);
             Route::post('add-advice' , [AdminProfileController::class , 'addAdvice']);
             Route::post('edit-advice' , [AdminProfileController::class , 'editAdvice']);
             Route::post('delete-advice' , [AdminProfileController::class , 'deleteAdvice']);

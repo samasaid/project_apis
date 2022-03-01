@@ -24,8 +24,11 @@ class Admin extends Authenticatable implements JWTSubject
         'name',
         'username',
         'email',
-        'password',
+        // 'password',
         'photo',
+    ];
+    protected $hidden = [
+        'password',
     ];
 
      // this function for add assets folder before image filepath

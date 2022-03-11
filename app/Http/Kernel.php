@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AssignGuard;
 use App\Http\Middleware\CheckPassword;
+use App\Http\Middleware\UserActivity;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -23,6 +24,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \App\Http\Middleware\UserActivity::class,
     ];
 
     /**
@@ -67,5 +69,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'checkPassword'=> \App\Http\Middleware\CheckPassword::class,
         'auth.guard' => \App\Http\Middleware\AssignGuard::class,
+        'UserActivity'=>\App\Http\Middleware\UserActivity::class,
     ];
 }

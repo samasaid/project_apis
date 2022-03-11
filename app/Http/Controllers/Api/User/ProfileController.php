@@ -39,8 +39,8 @@ class ProfileController extends Controller
                 $userId = Auth::guard('user-api')->user()->id;
                 $rules = [
                     "full_name" => "required|string",
-                    'national_id'=> "required|max:14|unique:users,national_id,".$userId,
-                    'mobile'=>"required|max:11|unique:users,mobile,".$userId,
+                    'national_id'=> "required|max:14|min:14|unique:users,national_id,".$userId,
+                    'mobile'=>"required|min:4|max:11|unique:users,mobile,".$userId,
                     'address'=>"required|exists:provinces,name|string",
                     'date_of_birth'=>"required",
                     'blood_type'=>"required|string|in:A+,O+,B+,AB+,A-,O-,B-,AB-",
@@ -53,6 +53,9 @@ class ProfileController extends Controller
                     "string"=>"this filed must be letters",
                     "in"=>"this value is not in the list",
                     "exists"=>"this province is not in the list",
+                    "numeric"=>"this filed shoud be numeric",
+                    "mobile.min"=>"the mobile content very short",
+                    "national_id.min"=>"the national number content very short",
                     "national_id.unique"=>"the national number has already been registered",
                     "national_id.max"=>"the national number must be 14 characters long",
                     "mobile.unique"=>"the mobile number has already been registered",

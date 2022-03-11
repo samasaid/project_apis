@@ -20,8 +20,8 @@ class AuthController extends Controller
                 // validation
                     $rules = [
                         "full_name" => "required|string",
-                        'national_id'=> "required|unique:users,national_id|max:14",
-                        'mobile'=>"required|unique:users,mobile|max:11",
+                        'national_id'=> "required|unique:users,national_id|max:14|min:14",
+                        'mobile'=>"required|unique:users,mobile|min:4|max:11",
                         'address'=>"required|exists:provinces,name|string",
                         'date_of_birth'=>"required",
                         'blood_type'=>"required|string|in:A+,O+,B+,AB+,A-,O-,B-,AB-",
@@ -34,6 +34,9 @@ class AuthController extends Controller
                         "string"=>"this filed must be letters",
                         "in"=>"this value is not in the list",
                         "exists"=>"this province is not in the list",
+                        "numeric"=>"this filed shoud be numeric",
+                        "mobile.min"=>"the mobile content very short",
+                        "national_id.min"=>"the national number content very short",
                         "national_id.unique"=>"the national number has already been registered",
                         "national_id.max"=>"the national number must be 14 characters long",
                         "mobile.unique"=>"the mobile number has already been registered",
@@ -73,11 +76,13 @@ class AuthController extends Controller
             try {
                 //validation
                 $rules = [
-                    'national_id'=> "required|max:14",
+                    'national_id'=> "required|max:14|min:14",
                 ];
                 $messages = [
                     "required"=>"this filed is Required",
                     "national_id.max"=>"the national number must be 14 characters long",
+                    "numeric"=>"this filed shoud be numeric",
+                    "national_id.min"=>"the national number content very short",
                 ];
                 $validator = Validator::make($request->only(['national_id']), $rules , $messages);
                 if ($validator->fails()) {

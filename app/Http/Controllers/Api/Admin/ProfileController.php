@@ -10,6 +10,7 @@ use App\Models\users\User;
 use Illuminate\Http\Request;
 use App\Traits\GeneralTrait;
 use Exception;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -136,7 +137,7 @@ class ProfileController extends Controller
             if($advices->isEmpty()){
                 return  $this -> returnError('','Sorry, there are no advices');
             }
-            return $this->returnData('Donors' , $advices);
+            return $this->returnData('advices' , $advices);
         } catch (Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
@@ -155,7 +156,6 @@ class ProfileController extends Controller
             $messages = [
                 "required"=>"this filed is Required",
                 "string"=>"this filed must be letters",
-                "regex"=>"this filed must be letters",
             ];
             $validator = Validator::make($request->all(), $rules , $messages);
             if ($validator->fails()) {
@@ -180,14 +180,14 @@ class ProfileController extends Controller
             //validation
             $rules = [
                 "chronic_disease"=>"required|string",
-                "description"=>"required|regex:/^[a-zA-Z]+$/u",
-                "treatment"=>"required|regex:/^[a-zA-Z]+$/u",
-                "syndrome"=>"required|regex:/^[a-zA-Z]+$/u",
+                "description"=>"required",
+                "treatment"=>"required",
+                "syndrome"=>"required",
             ];
             $messages = [
                 "required"=>"this filed is Required",
                 "string"=>"this filed must be letters",
-                "regex"=>"this filed must be letters",
+
             ];
             $validator = Validator::make($request->all(), $rules , $messages);
             if ($validator->fails()) {
@@ -240,7 +240,7 @@ class ProfileController extends Controller
         try {
               //validation
               $rules = [
-                "national_id"=>"required|max:14",
+                "national_id"=>"required|max:14|min:14",
             ];
             $messages = [
                 "required"=>"this filed is Required",
@@ -252,13 +252,43 @@ class ProfileController extends Controller
                 return $this->returnValidationError($code, $validator);
             }
 
-            $user = User::where('national_id' , '=' ,$request->national_id)->get();
+            $user = User::where('national_id' , '=' ,$request->national_id)->get(['id','full_name','national_id','mobile']);
             if($user->isEmpty()){
                 return  $this -> returnError('','Sorry, this user not found');
             }
-            return $this->returnData('user' , $user);
+            return $this->returnData('user' , $user );
 
         }catch(Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
+    }
+    //edit  user national number by admin
+    public function editUserId(Request $request){
+        try {
+            //validation
+            $rules = [
+                "national_id"=>"required|max:14|min:14",
+            ];
+            $messages = [
+                "required"=>"this filed is Required",
+                "national_id.max"=>"the national number must be 14 characters long",
+            ];
+            $validator = Validator::make($request->all(), $rules , $messages);
+            if ($validator->fails()) {
+                $code = $this->returnCodeAccordingToInput($validator);
+                return $this->returnValidationError($code, $validator);
+            }
+            $user = User::find($request->id);
+            if(!$user){
+                return $this->returnError('' , 'this user doesn`t exists');
+            }
+            $user->update([
+                "national_id"=>$request->national_id,
+            ]);
+            //return success messege
+            $msg = "user information has been updated successfully";
+            return $this->returnSuccessMessage($msg);
+        } catch (Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
@@ -341,5 +371,82 @@ class ProfileController extends Controller
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
+    //get all users
+    public function getAllUsers(){
+        try {
+            $users = User::all();
+            if($users->isEmpty()){
+                return  $this -> returnError('','Sorry, there are no users');
+            }
+            // foreach($users as $user) {
+            //     if(Cache::has('is_online'. $user->id)){
+            //             $user->update([
+            //                 'active'=>1 //online
+            //             ]);
+
+            //     }else{
+            //         $user->update([
+            //             'active'=>0 //offline
+            //         ]);
+            //     }
+            // }
+            return $this->returnData('users' , $users);
+        } catch (Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
+    }
+    // function that use to get number of users and chronic diseases and advice and donors
+    public function getCount(){
+        try {
+            $users = \App\Models\users\User::count();
+            $donors = \App\Models\users\Donor::count();
+            $diseases = \App\Models\users\ChronicDisease::count();
+            $advices = \App\Models\admins\Advice::count();
+            $counts = [
+                'users'=>$users,
+                'donors'=>$donors,
+                'diseases'=>$diseases,
+                'advices'=>$advices
+            ];
+            return $this->returnData('counts' , $counts);
+        } catch(Exception $ex){
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
+    }
+    public function deleteUser(Request $request){
+        $token = $request->header('auth-token');
+            if($token){
+                try{
+                    $userId = $request->id;
+                    if($userId != null){
+                        $user = User::find($userId);
+                        if(!$user){
+                           return $this->returnError('' , 'this user doesn`t exists');
+                        }
+                        $user->delete();
+                       return $this->returnSuccessMessage('user removed successfuly');
+                    }else{
+                       return $this->returnError('' , 'something went wrongs');
+                    }
+
+                }catch(\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
+                   return $this->returnError('' , 'something went wrongs');
+                }
+            }else{
+               return $this->returnError('' , 'something went wrongs');
+            }
+    }
+    // public function return online and last seen for user
+    // public function returnUsers (){
+    //     try {
+    //         $users = User::all()->whereNotNull('last_seen')->orderBy('last_seen' , 'DESC');
+    //         // if($users->isEmpty()){
+    //         //     return $this->returnError('000' , "no users has last seen time");
+    //         // }
+    //         return $this->returnData('users' , $users);
+    //     } catch(Exception $ex){
+    //         return $this->returnError($ex->getCode(), $ex->getMessage());
+    //     }
+    // }
 
 }

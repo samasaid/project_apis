@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -28,6 +29,9 @@ class User extends Authenticatable implements JWTSubject
         'blood_type',
         'sex',
         'social_status',
+        'photo',
+        'last_seen',
+        'active'
     ];
 
     /**

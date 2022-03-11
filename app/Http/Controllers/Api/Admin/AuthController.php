@@ -35,7 +35,7 @@ class AuthController extends Controller
             $credentials = $request->only(['username', 'password']);
             $token = Auth::guard('admin-api')->attempt($credentials);
             if (!$token)
-                return $this->returnError('E001', 'te login information is incorrect, try again');
+                return $this->returnError('E001', 'the login information is incorrect, try again');
             //return token
             $msg = "you are loggin successfully";
             return $this->returnData('token', $token , $msg);

@@ -98,6 +98,9 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
             Route::get('all-advices' , [AdminProfileController::class , 'getAllAdvices']);
             Route::get('all-users' , [AdminProfileController::class , 'getAllUsers']);
             Route::get('counts' , [AdminProfileController::class , 'getCount']);
+            Route::get('number-of-user-per-month' , [AdminProfileController::class , 'getNumOfUserForChart']);
+            Route::get('number-of-donor-per-month' , [AdminProfileController::class , 'getNumOfDonorForChart']);
+
 
         });
     });

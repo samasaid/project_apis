@@ -31,7 +31,8 @@ class User extends Authenticatable implements JWTSubject
         'social_status',
         'photo',
         'last_seen',
-        'active'
+        'active',
+        'created_at'
     ];
 
     /**
@@ -52,6 +53,9 @@ class User extends Authenticatable implements JWTSubject
      // this function for add assets folder before image filepath
    public function getPhotoAttribute($val){
     return ($val !== null) ? asset('assets/'.$val): "";
+   }
+   public function isOnline(){
+       return Cache::has('is_online' . $this->id);
    }
 
     /**

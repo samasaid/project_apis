@@ -6,13 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\admins\Admin;
 use App\Models\admins\Advice;
 use App\Models\users\ChronicDisease;
+use App\Models\users\Donor;
 use App\Models\users\User;
 use Illuminate\Http\Request;
 use App\Traits\GeneralTrait;
 use Exception;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Framework\Constraint\Count;
 
 class ProfileController extends Controller
 {
@@ -33,6 +36,9 @@ class ProfileController extends Controller
             if ($validator->fails()) {
                 $code = $this->returnCodeAccordingToInput($validator);
                 return $this->returnValidationError($code, $validator);
+            }
+            if (!$request->has('status')) {
+                $request->request->add(['status'=>0]);
             }
             Advice::create([
                 "advice"=>$request->advice,
@@ -64,6 +70,9 @@ class ProfileController extends Controller
             $advice = Advice::find($request->id);
             if(!$advice){
                 return $this->returnError('' , 'this advice doesn`t exists');
+            }
+            if (!$request->has('status')) {
+                $request->request->add(['status'=>0]);
             }
             $advice->update([
                 "advice"=>$request->advice,
@@ -372,26 +381,76 @@ class ProfileController extends Controller
         }
     }
     //get all users
-    public function getAllUsers(){
+    public function getAllUsers(Request $request){
         try {
             $users = User::all();
             if($users->isEmpty()){
                 return  $this -> returnError('','Sorry, there are no users');
             }
-            // foreach($users as $user) {
-            //     if(Cache::has('is_online'. $user->id)){
-            //             $user->update([
-            //                 'active'=>1 //online
-            //             ]);
+            foreach($users as $user) {
+                if($user->isOnline()){
+                        $user->update([
+                            'active'=>1 //online
+                        ]);
 
-            //     }else{
-            //         $user->update([
-            //             'active'=>0 //offline
-            //         ]);
-            //     }
-            // }
+                }else{
+                    $user->update([
+                        'active'=>0 //offline
+                    ]);
+                }
+            }
             return $this->returnData('users' , $users);
         } catch (Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
+    }
+    //get number of users are make registration per month
+    public function getNumOfUserForChart(){
+        try{
+            $users = User::select('id' , 'created_at')->get()->groupBy( function($date){
+                    return  Carbon::parse($date->created_at)->format('m');
+            });
+            $usermcount = [];
+            $userArr = [];
+            foreach ($users as $key => $value) {
+                $usermcount[ (int)$key ] = count($value);
+            }
+            $month = ['Jan' , 'Feb' , 'Mar' , 'Apr' , 'May' , 'Jun' , 'Jul' , 'Aug' , 'Sep' , 'Oct' , 'Nov' , 'Dec'];
+            for ($i= 1; $i<= 12 ; $i++) {
+                if (!empty($usermcount[$i])) {
+                    $userArr[$i]['count'] = $usermcount[$i];
+                }else {
+                    $userArr[$i]['count'] = 0;
+                }
+                $userArr[$i]['month'] = $month[$i-1];
+            }
+            return $this->returnData('data' , $userArr);
+        }catch(Exception $ex){
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
+    }
+     //get number of donors are added per month
+     public function getNumOfDonorForChart(){
+        try{
+            $donors = Donor::select('id' , 'created_at')->get()->groupBy( function($date){
+                    return  Carbon::parse($date->created_at)->format('m');
+            });
+            $donormcount = [];
+            $donorArr = [];
+            foreach ($donors as $key => $value) {
+                $donormcount[ (int)$key ] = count($value);
+            }
+            $month = ['Jan' , 'Feb' , 'Mar' , 'Apr' , 'May' , 'Jun' , 'Jul' , 'Aug' , 'Sep' , 'Oct' , 'Nov' , 'Dec'];
+            for ($i= 1; $i<= 12 ; $i++) {
+                if (!empty($donormcount[$i])) {
+                    $donorArr[$i]['count'] = $donormcount[$i];
+                }else {
+                    $donorArr[$i]['count'] = 0;
+                }
+                $donorArr[$i]['month'] = $month[$i-1];
+            }
+            return $this->returnData('data' , $donorArr);
+        }catch(Exception $ex){
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }

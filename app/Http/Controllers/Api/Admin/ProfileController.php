@@ -26,7 +26,6 @@ class ProfileController extends Controller
             //validation
             $rules = [
                 "advice"=>"required|string",
-                "status"=>"required|in:0,1",
             ];
             $messages = [
                 "required"=>"this filed is Required",
@@ -56,7 +55,7 @@ class ProfileController extends Controller
             //validation
             $rules = [
                 "advice"=>"required|string",
-                "status"=>"required|in:0,1",
+                // "status"=>"required|in:0,1",
             ];
             $messages = [
                 "required"=>"this filed is Required",
@@ -322,7 +321,7 @@ class ProfileController extends Controller
             $userId = Auth::guard('admin-api')->user()->id;
             $rules = [
                 'name' => "required|string",
-                'username'=> "required|string|unique:admins,username,".$userId,
+                // 'username'=> "required|string|unique:admins,username,".$userId,
                 'email'=>"required|email|unique:admins,email,".$userId,
 
             ];
@@ -348,7 +347,7 @@ class ProfileController extends Controller
             }
             $user->update([
                 "name"=>$request->name,
-                'username'=>$request->username,
+                // 'username'=>$request->username,
                 'email'=>$request->email,
             ]);
             $user->save();

@@ -36,7 +36,7 @@ class ProfileController extends Controller
                 $code = $this->returnCodeAccordingToInput($validator);
                 return $this->returnValidationError($code, $validator);
             }
-            if (!$request->has('status')) {
+            if ($request->status == null) {
                 $request->request->add(['status'=>0]);
             }
             Advice::create([
@@ -70,7 +70,7 @@ class ProfileController extends Controller
             if(!$advice){
                 return $this->returnError('' , 'this advice doesn`t exists');
             }
-            if (!$request->has('status')) {
+            if ($request->status == null) {
                 $request->request->add(['status'=>0]);
             }
             $advice->update([
@@ -471,6 +471,7 @@ class ProfileController extends Controller
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
+    //function for delete users
     public function deleteUser(Request $request){
         $token = $request->header('auth-token');
             if($token){
@@ -483,6 +484,30 @@ class ProfileController extends Controller
                         }
                         $user->delete();
                        return $this->returnSuccessMessage('user removed successfuly');
+                    }else{
+                       return $this->returnError('' , 'something went wrongs');
+                    }
+
+                }catch(\Tymon\JWTAuth\Exceptions\TokenInvalidException $e){
+                   return $this->returnError('' , 'something went wrongs');
+                }
+            }else{
+               return $this->returnError('' , 'something went wrongs');
+            }
+    }
+    //function for delete donors
+    public function deleteDonor(Request $request){
+        $token = $request->header('auth-token');
+            if($token){
+                try{
+                    $donorId = $request->id;
+                    if($donorId != null){
+                        $donor = Donor::find($donorId);
+                        if(!$donor){
+                           return $this->returnError('' , 'this donor doesn`t exists');
+                        }
+                        $donor->delete();
+                       return $this->returnSuccessMessage('donor removed successfuly');
                     }else{
                        return $this->returnError('' , 'something went wrongs');
                     }

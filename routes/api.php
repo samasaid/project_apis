@@ -93,6 +93,7 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
             Route::post('edit-chronic-disease' , [AdminProfileController::class , 'editChronicDisease']);
             Route::post('delete-chronic-disease' , [AdminProfileController::class , 'deleteChronicDisease']);
             Route::post('delete-user' , [AdminProfileController::class , 'deleteUser']);
+            Route::post('delete-donor' , [AdminProfileController::class , 'deleteDonor']);
             Route::post('users-search' , [AdminProfileController::class , 'userSearch']);
             Route::post('edit-user-by-admin' , [AdminProfileController::class , 'editUserId']);
             Route::get('all-advices' , [AdminProfileController::class , 'getAllAdvices']);

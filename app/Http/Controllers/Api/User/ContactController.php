@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
+    use GeneralTrait;
     public function storeContactForm(Request $request){
         try{
             // validation
@@ -35,12 +36,7 @@ class ContactController extends Controller
 
             $input = $request->all();
 
-            Contact::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'subject' => $request->subject,
-            'content' => $request->content,
-            ]);
+            Contact::create($input);
 
             //  Send mail to admin
             Mail::send('contactMail', array(

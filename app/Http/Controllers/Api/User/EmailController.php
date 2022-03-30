@@ -17,7 +17,7 @@ class EmailController extends Controller
             // validation
             $rules = [
                 'email' => 'required|email',
-                'message' => 'required|string',
+                'message' => 'required',
                 'name' => 'required|string',
             ];
             $messages = [

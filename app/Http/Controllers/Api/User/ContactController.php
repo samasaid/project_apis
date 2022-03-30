@@ -41,7 +41,6 @@ class ContactController extends Controller
             Mail::send('contactMail', array(
                 'name' => $input['name'],
                 'email' => $input['email'],
-                'phone' => $input['phone'],
                 'subject' => $input['subject'],
                 'message' => $input['message'],
             ), function($message) use ($request){

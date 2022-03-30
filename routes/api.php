@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Api\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\User\AuthController;
+use App\Http\Controllers\Api\User\ContactController;
 use App\Http\Controllers\Api\User\DonorsController;
 use App\Http\Controllers\Api\User\EmailController;
 use App\Http\Controllers\Api\User\GeneralController;
@@ -46,7 +47,8 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
         Route::post('add-donor', [DonorsController::class , 'addDonor'] );
         Route::get('donors', [DonorsController::class , 'getAllDonors'] );
         Route::post('donors-search', [DonorsController::class , 'searchAboutDonorByProvincesAndBloodType'] );
-        Route::post('contact-us', [EmailController::class , 'sendEmail'] );
+        Route::post('contact-us', [ContactController::class , 'storeContactForm'] );
+        Route::post('admin-contact', [EmailController::class , 'sendEmail'] );
         // Route::get('pro', [GeneralController::class , 'addp'] );
 
     });

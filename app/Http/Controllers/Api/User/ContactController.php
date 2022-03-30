@@ -43,7 +43,7 @@ class ContactController extends Controller
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'subject' => $input['subject'],
-                'message' => $input['message'],
+                'content' => $input['content'],
             ), function($message) use ($request){
                 $message->from($request->email);
                 $message->to('healthhistory2022@gmail.com', 'Health History')->subject($request->get('subject'));

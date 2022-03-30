@@ -39,7 +39,7 @@ class EmailController extends Controller
 
             Mail::send('email-template', $data, function($message) use ($data) {
             $message->to($data['email'])
-            ->subject($data['message']);
+            ->subject($data['content']);
             });
             return $this->returnSuccessMessage('Email successfully sent!');
         }catch(Exception $ex){

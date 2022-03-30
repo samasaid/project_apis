@@ -15,6 +15,6 @@ class Contact extends Model
      * @var array
     */
     public $fillable = [
-        'name', 'email', 'phone', 'subject', 'message'
+        'name', 'email', 'phone', 'subject', 'content'
     ];
 }

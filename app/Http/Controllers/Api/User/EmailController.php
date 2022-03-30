@@ -32,7 +32,7 @@ class EmailController extends Controller
                 return $this->returnValidationError($code, $validator);
             }
             $data = [
-            'message' => $request->subject,
+            'message' => $request->message,
             'name' => $request->name,
             'email' => $request->email,
             ];

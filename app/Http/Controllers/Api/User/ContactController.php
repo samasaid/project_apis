@@ -35,7 +35,12 @@ class ContactController extends Controller
 
             $input = $request->all();
 
-            Contact::create($input);
+            Contact::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'subject' => $request->subject,
+            'content' => $request->content,
+            ]);
 
             //  Send mail to admin
             Mail::send('contactMail', array(

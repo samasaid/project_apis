@@ -10,6 +10,7 @@
                        </div>
                    @endif
                    {!! $content !!}
+                   {!! $email !!}
                </div>
            </div>
        </div>

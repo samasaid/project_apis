@@ -12,12 +12,14 @@ use Illuminate\Support\Facades\Mail;
 class EmailController extends Controller
 {
     use GeneralTrait;
+    //web site send message to user
     public function sendEmail(Request $request){
         try{
             // validation
             $rules = [
                 'email' => 'required|email',
                 'content' => 'required',
+                'subject' => 'required',
                 'name' => 'required|string',
             ];
             $messages = [
@@ -32,6 +34,7 @@ class EmailController extends Controller
                 return $this->returnValidationError($code, $validator);
             }
             $data = [
+            'subject' => $request->subject,
             'content' => $request->content,
             'name' => $request->name,
             'email' => $request->email,
@@ -39,7 +42,7 @@ class EmailController extends Controller
 
             Mail::send('email-template', $data, function($message) use ($data) {
             $message->to($data['email'])
-            ->subject($data['content']);
+            ->subject($data['subject']);
             });
             return $this->returnSuccessMessage('Email successfully sent!');
         }catch(Exception $ex){

@@ -3,24 +3,23 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\users\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\GeneralTrait;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 
-class EmailController extends Controller
+class ContactController extends Controller
 {
-    use GeneralTrait;
-    //website send message to user
-    public function sendEmail(Request $request){
+    public function storeContactForm(Request $request){
         try{
             // validation
             $rules = [
-                'email' => 'required|email',
-                'content' => 'required',
-                'subject' => 'required',
                 'name' => 'required|string',
+                'email' => 'required|email',
+                'subject' => 'required',
+                'content' => 'required',
             ];
             $messages = [
                 "required"=>"this filed is Required",
@@ -33,20 +32,25 @@ class EmailController extends Controller
                 $code = $this->returnCodeAccordingToInput($validator);
                 return $this->returnValidationError($code, $validator);
             }
-            $data = [
-            'subject' => $request->subject,
-            'content' => $request->content,
-            'name' => $request->name,
-            'email' => $request->email,
-            ];
 
-            Mail::send('email-template', $data, function($message) use ($data) {
-            $message->to($data['email'])
-            ->subject($data['subject']);
+            $input = $request->all();
+
+            Contact::create($input);
+
+            //  Send mail to admin
+            Mail::send('contactMail', array(
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'phone' => $input['phone'],
+                'subject' => $input['subject'],
+                'message' => $input['message'],
+            ), function($message) use ($request){
+                $message->from($request->email);
+                $message->to('healthhistory2022@gmail.com', 'Health History')->subject($request->get('subject'));
             });
-            return $this->returnSuccessMessage('Email successfully sent!');
+            return $this->returnSuccessMessage('your message successfully sent!');
         }catch(Exception $ex){
             return $this->returnError($ex->getCode(), $ex->getMessage());
-         }
+        }
     }
 }

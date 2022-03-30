@@ -17,7 +17,7 @@ class EmailController extends Controller
             // validation
             $rules = [
                 'email' => 'required|email',
-                'message' => 'required',
+                'content' => 'required',
                 'name' => 'required|string',
             ];
             $messages = [
@@ -32,7 +32,7 @@ class EmailController extends Controller
                 return $this->returnValidationError($code, $validator);
             }
             $data = [
-            'message' => $request->message,
+            'content' => $request->content,
             'name' => $request->name,
             'email' => $request->email,
             ];

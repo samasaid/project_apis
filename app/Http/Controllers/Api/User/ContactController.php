@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 class ContactController extends Controller
 {
     use GeneralTrait;
+    //send message to admin mail
     public function storeContactForm(Request $request){
         try{
             // validation

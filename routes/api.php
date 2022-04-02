@@ -48,7 +48,6 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
         Route::get('donors', [DonorsController::class , 'getAllDonors'] );
         Route::post('donors-search', [DonorsController::class , 'searchAboutDonorByProvincesAndBloodType'] );
         Route::post('contact-us', [ContactController::class , 'storeContactForm'] );
-        Route::post('admin-contact', [EmailController::class , 'sendEmail'] );
         // Route::get('pro', [GeneralController::class , 'addp'] );
 
     });

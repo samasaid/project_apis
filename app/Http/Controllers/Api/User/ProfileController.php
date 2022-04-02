@@ -38,9 +38,9 @@ class ProfileController extends Controller
                 // validation
                 $userId = Auth::guard('user-api')->user()->id;
                 $rules = [
-                    "full_name" => "required|string",
-                    'national_id'=> "required|max:14|min:14|unique:users,national_id,".$userId,
-                    'mobile'=>"required|min:4|max:11|unique:users,mobile,".$userId,
+                    "full_name" => "required|regex:/^[\pL\s\-]+$/u",
+                    'national_id'=> "required|regex:/^[0-9]+$/|max:14|min:14|unique:users,national_id,".$userId,
+                    'mobile'=>"required|regex:/^[0-9]+$/|min:4|max:11|unique:users,mobile,".$userId,
                     'address'=>"required|exists:provinces,name|string",
                     'date_of_birth'=>"required",
                     'blood_type'=>"required|string|in:A+,O+,B+,AB+,A-,O-,B-,AB-",
@@ -53,7 +53,9 @@ class ProfileController extends Controller
                     "string"=>"this filed must be letters",
                     "in"=>"this value is not in the list",
                     "exists"=>"this province is not in the list",
-                    "numeric"=>"this filed shoud be numeric",
+                    "full_name.regex"=>"this filed must be letters",
+                    "mobile.regex"=>"this filed shoud be numeric",
+                    "national_id.regex"=>"this filed shoud be numeric",
                     "mobile.min"=>"the mobile content very short",
                     "national_id.min"=>"the national number content very short",
                     "national_id.unique"=>"the national number has already been registered",
@@ -96,10 +98,13 @@ class ProfileController extends Controller
             try{
                 //update user data to add user photo
                 $user_id = Auth::guard('user-api')->user()->id;
-                $user = User::where('id' , $user_id)->first();
+                $user = User::find($user_id)/*where('id' , $user_id)->get()*/;
                 if($request->has('photo')){
                     $filePath = uploadImage('profile_image' , $request->photo);
-                    $user->photo = $filePath ;
+                    // $user->photo = $filePath ;
+                    $user->update([
+                        "photo"=>$filePath,
+                    ]);
                     $user->save();
                     // return Success Message
                     $msg = "profile picture updated successfully";

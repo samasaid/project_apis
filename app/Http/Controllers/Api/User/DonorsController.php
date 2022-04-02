@@ -16,16 +16,18 @@ class DonorsController extends Controller
         try{
         // validation
             $rules = [
-                "name" => "required|string",
-                'national_id'=> "required|unique:donors,national_id|max:14",
-                'mobile'=>"required|unique:donors,mobile|max:11",
-                'address'=>"required|string",
+                "name" => "required|regex:/^[\pL\s\-]+$/u",
+                'national_id'=> "required|regex:/^[0-9]+$|unique:donors,national_id|max:14",
+                'mobile'=>"required|regex:/^[0-9]+$|unique:donors,mobile|max:11",
+                'address'=>"required|exists:provinces,name|string",
                 'blood_type'=>"required|string|in:A+,O+,B+,AB+,A-,O-,B-,AB-",
 
             ];
             $messages = [
                 "required"=>"this filed is Required",
-                "string"=>"this filed must be letters",
+                "name.regex"=>"this filed must be letters",
+                "national_id.regex"=>"this filed must be numeric",
+                "mobile.regex"=>"this filed must be numeric",
                 "in"=>"this value is not in the list",
                 "national_id.unique"=>"the national number has already been added",
                 "mobile.unique"=>"the mobile number has already been added",

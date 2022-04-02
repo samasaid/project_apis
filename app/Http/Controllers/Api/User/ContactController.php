@@ -18,14 +18,16 @@ class ContactController extends Controller
         try{
             // validation
             $rules = [
-                'name' => 'required|string',
+                'name' => 'required|regex:/^[\pL\s\-]+$/u',
                 'email' => 'required|email',
-                'subject' => 'required',
-                'content' => 'required',
+                'subject' => 'required|string',
+                'content' => 'required|string',
             ];
             $messages = [
                 "required"=>"this filed is Required",
                 "string"=>"this filed must be letters",
+                "name.regex"=>"this filed must be letters",
+                "email"=>"this filed must be valid email"
             ];
 
             $validator = Validator::make($request->all(), $rules , $messages);

@@ -363,10 +363,13 @@ class ProfileController extends Controller
         try{
             //update user data to add user photo
             $user_id = Auth::guard('admin-api')->user()->id;
-            $user = Admin::where('id' , $user_id)->first();
+            $user = Admin::find($user_id);
             if($request->has('photo')){
                 $filePath = uploadImage('profile_image' , $request->photo);
-                $user->photo = $filePath ;
+                // $user->photo = $filePath ;
+                $user->update([
+                    "photo"=>$filePath,
+                ]);
                 $user->save();
                 // return Success Message
                 $msg = "profile picture updated successfully";

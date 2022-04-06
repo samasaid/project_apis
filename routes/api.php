@@ -80,6 +80,11 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
         Route::get('logout',[AdminAuthController::class , 'logout']) -> middleware(['auth.guard:admin-api']); //تم اضافة الميدلوير لان لازم يكون المستخدم مسجل زخول علشان يعرف يعمل لوجاويت
 
     });
+    Route::group(['prefix'=>'admin' , 'namespace'=>'Admin'] , function(){
+         Route::get('all-advices' , [AdminProfileController::class , 'getAllAdvices']);
+         Route::get('counts' , [AdminProfileController::class , 'getCount']);
+
+    });
     ######################## end admin authentocation api routes for unauthentecation  ########################
     ##################### start profile api routs for authentocated admin ###########################
     Route::group(['prefix'=>'admin' , 'namespace'=>'Admin' , 'middleware'=>['auth.guard:admin-api']] , function(){
@@ -99,9 +104,9 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
             Route::post('delete-donor' , [AdminProfileController::class , 'deleteDonor']);
             Route::post('users-search' , [AdminProfileController::class , 'userSearch']);
             Route::post('edit-user-by-admin' , [AdminProfileController::class , 'editUserId']);
-            Route::get('all-advices' , [AdminProfileController::class , 'getAllAdvices']);
+            // Route::get('all-advices' , [AdminProfileController::class , 'getAllAdvices']);
             Route::get('all-users' , [AdminProfileController::class , 'getAllUsers']);
-            Route::get('counts' , [AdminProfileController::class , 'getCount']);
+            // Route::get('counts' , [AdminProfileController::class , 'getCount']);
             Route::get('number-of-user-per-month' , [AdminProfileController::class , 'getNumOfUserForChart']);
             Route::get('number-of-donor-per-month' , [AdminProfileController::class , 'getNumOfDonorForChart']);
 

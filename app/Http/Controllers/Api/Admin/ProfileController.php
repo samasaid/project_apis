@@ -373,7 +373,7 @@ class ProfileController extends Controller
                 $user->save();
                 // return Success Message
                 $msg = "profile picture updated successfully";
-                return $this->returnSuccessMessage($msg);
+                return $this->returnData('photo',$user->photo,$msg);
              }else{
                  return $this->returnError('' , 'sorry profile picture has not been updated');
              }

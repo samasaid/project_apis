@@ -17,7 +17,7 @@ class DonorsController extends Controller
         // validation
             $rules = [
                 "name" => "required|regex:/^[\pL\s\-]+$/u",
-                'national_id'=> "required|regex:/^[0-9]+$|unique:donors,national_id|max:14",
+                'national_id'=> "required|regex:/^[0-9]+$/|unique:donors,national_id|max:14",
                 'mobile'=>"required|regex:/^[0-9]+$/|unique:donors,mobile|max:11",
                 'address'=>"required|exists:provinces,name|string",
                 'blood_type'=>"required|string|in:A+,O+,B+,AB+,A-,O-,B-,AB-",

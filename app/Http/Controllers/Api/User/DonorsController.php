@@ -18,7 +18,7 @@ class DonorsController extends Controller
             $rules = [
                 "name" => "required|regex:/^[\pL\s\-]+$/u",
                 'national_id'=> "required|regex:/^[0-9]+$|unique:donors,national_id|max:14",
-                'mobile'=>"required|regex:/^[0-9]+$|unique:donors,mobile|max:11",
+                'mobile'=>"required|regex:/^[0-9]+$/|unique:donors,mobile|max:11",
                 'address'=>"required|exists:provinces,name|string",
                 'blood_type'=>"required|string|in:A+,O+,B+,AB+,A-,O-,B-,AB-",
 
@@ -69,9 +69,8 @@ class DonorsController extends Controller
     }
     public function searchAboutDonorByProvincesAndBloodType(Request $request){
         try {
-            // $donorsBYAddress = Donor::where('address' , $request->address)->get();
-            // $donorsBYBloodType = Donor::where('blood_type' , $request->blood_type)->get();
-            $donorsBYAddressAndBloodType = Donor::where('address' , '=' ,$request->address)->Where('blood_type' , '=' ,$request->blood_type)->get();
+            $donorsBYAddressAndBloodType = Donor::where('address' , '=' ,$request->address)
+            ->Where('blood_type' , '=' ,$request->blood_type)->get();
             if($donorsBYAddressAndBloodType->isEmpty()){
                 return  $this -> returnError('','Sorry, there are no donors');
             }

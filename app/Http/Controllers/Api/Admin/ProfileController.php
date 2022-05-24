@@ -522,17 +522,5 @@ class ProfileController extends Controller
                return $this->returnError('' , 'something went wrongs');
             }
     }
-    // public function return online and last seen for user
-    // public function returnUsers (){
-    //     try {
-    //         $users = User::all()->whereNotNull('last_seen')->orderBy('last_seen' , 'DESC');
-    //         // if($users->isEmpty()){
-    //         //     return $this->returnError('000' , "no users has last seen time");
-    //         // }
-    //         return $this->returnData('users' , $users);
-    //     } catch(Exception $ex){
-    //         return $this->returnError($ex->getCode(), $ex->getMessage());
-    //     }
-    // }
 
 }

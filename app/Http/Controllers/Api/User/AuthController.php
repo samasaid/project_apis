@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\users\User;
-use App\Traits\GeneralTrait;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Traits\GeneralTrait;
 
 
 class AuthController extends Controller
@@ -31,7 +31,6 @@ class AuthController extends Controller
                     ];
                     $messages = [
                         "required"=>"this filed is Required",
-                        // "string"=>"this filed must be letters",
                         "full_name.regex"=>"this filed must be letters",
                         "in"=>"this value is not in the list",
                         "exists"=>"this province is not in the list",

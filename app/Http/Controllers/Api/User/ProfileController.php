@@ -38,8 +38,9 @@ class ProfileController extends Controller
                 // validation
                 $userId = Auth::guard('user-api')->user()->id;
                 $rules = [
-                    "full_name" => "required|regex:/^[\pL\s\-]+$/u",
-                    'national_id'=> "required|regex:/^[0-9]+$/|max:14|min:14|unique:users,national_id,".$userId,
+                    "full_name" =>"required|regex:/^[\pL\s\-]+$/u",
+                    'national_id'=>"required|regex:/^[0-9]+$/|max:14|min:14|
+                    unique:users,national_id,".$userId,
                     'mobile'=>"required|regex:/^[0-9]+$/|min:4|max:11|unique:users,mobile,".$userId,
                     'address'=>"required|exists:provinces,name|string",
                     'date_of_birth'=>"required",

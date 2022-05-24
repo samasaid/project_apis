@@ -4,12 +4,10 @@ namespace App\Traits;
 
 trait GeneralTrait
 {
-
     public function getCurrentLang()
     {
         return app()->getLocale();
     }
-
     public function returnError($errNum, $msg)
     {
         return response()->json([
@@ -18,8 +16,6 @@ trait GeneralTrait
             'msg' => $msg
         ]);
     }
-
-
     public function returnSuccessMessage($msg = "", $errNum = "S000")
     {
         return [
@@ -38,22 +34,16 @@ trait GeneralTrait
             $key => $value
         ]);
     }
-
-
-
     public function returnValidationError($code , $validator)
     {
         return $this->returnError($code, $validator->errors()->first());
     }
-
-
     public function returnCodeAccordingToInput($validator)
     {
         $inputs = array_keys($validator->errors()->toArray());
         $code = $this->getErrorCode($inputs[0]);
         return $code;
     }
-
     public function getErrorCode($input)
     {
         if ($input == "name")

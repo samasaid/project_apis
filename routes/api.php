@@ -33,9 +33,9 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
     ######################## statr user authentocation api routes for unauthentecation  #####################
     Route::group(['prefix'=>'user' , 'namespace'=>'User'] , function(){
         Route::post('register', [AuthController::class , 'register'] );
-        Route::post('login', [AuthController::class , 'login'] );/*->middleware(['UserActivity']);*/
+        Route::post('login', [AuthController::class , 'login'] );
         //this route only for authentocation users
-        Route::get('logout',[AuthController::class , 'logout']) -> middleware(['auth.guard:user-api' , 'UserActivity']); //تم اضافة الميدلوير لان لازم يكون المستخدم مسجل زخول علشان يعرف يعمل لوجاويت
+        Route::get('logout',[AuthController::class , 'logout']) -> middleware(['auth.guard:user-api' , 'UserActivity']);
 
     });
     ######################## end user authentocation api routes for unauthentecation  ########################
@@ -48,21 +48,19 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
         Route::get('donors', [DonorsController::class , 'getAllDonors'] );
         Route::post('donors-search', [DonorsController::class , 'searchAboutDonorByProvincesAndBloodType'] );
         Route::post('contact-us', [ContactController::class , 'storeContactForm'] );
-        // Route::get('pro', [GeneralController::class , 'addp'] );
 
     });
     ################### end general api routes for unauthentecation user ################
 
     ##################### start profile api routs for authentocated users ###########################
     Route::group(['prefix'=>'user' , 'namespace'=>'User' , 'middleware'=>['auth.guard:user-api']] , function(){
-        // هنا مفروض يتحط الروتس اللى لازم يشوفها اليوزر وهو مسجل
+
         Route::group(['prefix'=>'profile' , 'middleware'=>['UserActivity']] , function(){
             Route::post('personal-information' , [ProfileController::class , 'getPersonalInfo']);
             Route::post('edit-information' , [ProfileController::class , 'editUserinfo']);
             Route::post('profile-picture' , [ProfileController::class , 'addProfilePicture']);
             Route::post('add-chronic-disease' , [ProfileController::class , 'addChronicDisease']);
             Route::post('chronic-disease-data' , [ProfileController::class , 'getUserChronicDisease']);
-            // Route::post('delete-chronic-disease' , [ProfileController::class , 'deleteDisease']);
             Route::post('chronic-disease-status' , [ProfileController::class , 'changeDiseaseStatus']);
             Route::post('add-diagnosis' , [ProfileController::class , 'addDiagnosis']);
             Route::post('edit-diagnosis' , [ProfileController::class , 'editDiagnosis']);
@@ -88,7 +86,6 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
     ######################## end admin authentocation api routes for unauthentecation  ########################
     ##################### start profile api routs for authentocated admin ###########################
     Route::group(['prefix'=>'admin' , 'namespace'=>'Admin' , 'middleware'=>['auth.guard:admin-api']] , function(){
-        // هنا مفروض يتحط الروتس اللى لازم يشوفها اليوزر وهو مسجل
         Route::group(['prefix'=>'profile'] , function(){
             Route::get('admin-info' , [AdminProfileController::class , 'getAdminInfo']);
             Route::post('edit-admin-info' , [AdminProfileController::class , 'editAdminInfo']);
@@ -104,9 +101,7 @@ Route::group(['middleware'=>['api'] , 'namespace'=>'Api'] , function(){
             Route::post('delete-donor' , [AdminProfileController::class , 'deleteDonor']);
             Route::post('users-search' , [AdminProfileController::class , 'userSearch']);
             Route::post('edit-user-by-admin' , [AdminProfileController::class , 'editUserId']);
-            // Route::get('all-advices' , [AdminProfileController::class , 'getAllAdvices']);
             Route::get('all-users' , [AdminProfileController::class , 'getAllUsers']);
-            // Route::get('counts' , [AdminProfileController::class , 'getCount']);
             Route::get('number-of-user-per-month' , [AdminProfileController::class , 'getNumOfUserForChart']);
             Route::get('number-of-donor-per-month' , [AdminProfileController::class , 'getNumOfDonorForChart']);
 
